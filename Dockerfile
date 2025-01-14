@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-FROM xychelsea/anaconda3:v22.11.1-gpu-jupyter
+FROM xychelsea/anaconda3:latest-gpu-jupyter
 LABEL description="llama_index GPU Container w/ Jupyter Notebooks"
 
 # $ docker build --network=host -t xychelsea/llama_index:latest-gpu-jupyter -f Dockerfile.nvidia-jupyter .
@@ -141,9 +141,10 @@ WORKDIR ${LLAMA_INDEX_PATH}
 # Build llama_index
 RUN conda run -n ${ANACONDA_ENV} pip install -r ${LLAMA_INDEX_PATH}/requirements.txt
 
-RUN conda run -n ${ANACONDA_ENV} pip install llama-index \
-    llama_index.llms.azure_openai \
-    llama-index-llms-openai 
+RUN conda run -n ${ANACONDA_ENV} pip install llama-index 
+#\
+#llama_index.llms.azure_openai \
+#llama-index-llms-openai 
 
 # Switch back to root
 USER root
@@ -161,3 +162,5 @@ RUN apt-get --purge -y autoremove git \
 # Re-activate user "anaconda"
 USER $ANACONDA_UID
 WORKDIR $HOME
+
+#docker run -p 8877:8888 -v ${PWD}:/home/jovyan/work --gpus=all guhzantut/jupyter-llama-sql
